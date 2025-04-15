@@ -14,7 +14,6 @@ notion_dbs = [CSN_DB_ID, CHAMEX_DB_ID, ADUNICAMP_DB_ID]
 
 notion = Client(auth=NOTION_TOKEN)
 gc = gspread.service_account(filename="credentials.json")
-sheet = gc.open("Burndowntest").sheet1
 
 STATUS_MAP = {
     "Despriorizado": "A fazer",
@@ -52,10 +51,6 @@ def fetch_notion_tasks(database_id: str) -> List[Tuple[str, str, str, str]]:
 
     return tasks
 
-def get_existing_rows():
-    records = sheet.get_all_values()
-    return set(tuple(row) for row in records[1:])
-
 def fetch_tasks(databases_ids = List[str]):
     for db_id in databases_ids:
         tasks = fetch_notion_tasks(db_id)
@@ -63,14 +58,13 @@ def fetch_tasks(databases_ids = List[str]):
             return tasks
     return []
 
-def get_sheet_name(database_id: str) -> str:
-    for sheet_name, db_id in SHEETS_MAP.items():
-        if db_id == database_id:
-            return sheet_name
-    return None
+def get_existing_rows(sheet) -> List[Tuple[str, str, str, str]]:
+    records = sheet.get_all_values()
+    return set(tuple(row) for row in records[1:])
 
-def update_sheet(tasks):
-    existing_rows = get_existing_rows()
+def update_sheet(tasks, sheet_name: str):
+    sheet = gc.open(sheet_name).sheet1
+    existing_rows = get_existing_rows(sheet)
 
     new_rows = [
         list(task)
@@ -89,13 +83,9 @@ def update_all_sheets():
     for sheet_name, db_id in SHEETS_MAP.items():
         tasks = fetch_notion_tasks(db_id)
         if tasks:
-            update_sheet(tasks)
+            update_sheet(tasks, sheet_name)
         else:
             print(f"Nenhuma tarefa encontrada para {sheet_name}")
 
 if __name__ == "__main__":
-    tasks = fetch_tasks(notion_dbs)
-    if not tasks:
-        print("Nenhuma tarefa encontrada")
-    else:
-        update_all_sheets()
+    update_all_sheets()
