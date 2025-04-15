@@ -7,7 +7,7 @@ from typing import List, Tuple
 
 load_dotenv()
 NOTION_TOKEN = os.environ["NOTION_TOKEN"]
-CSN_DB_ID = os.environ["NOTION_DATABASE_ID"]
+CSN_DB_ID = os.environ["CSN_DB_ID"]
 CHAMEX_DB_ID = os.environ["CHAMEX_DB_ID"]
 ADUNICAMP_DB_ID = os.environ["ADUNICAMP_DB_ID"]
 
