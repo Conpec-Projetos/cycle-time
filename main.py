@@ -50,6 +50,7 @@ def fetch_notion_tasks(database_id: str) -> List[Tuple[str, str, str, str]]:
 
         tasks.append((nome, grupo, status_principal, data_mov))
 
+    tasks = [task for task in tasks if task[3] != "Sem data"]
     return tasks
 
 def fetch_tasks(databases_ids = List[str]):
