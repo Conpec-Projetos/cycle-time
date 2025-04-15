@@ -21,14 +21,17 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Decrypt secrets
+      - name: Decrypt and run
         env:
           ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           CSN_DB_ID: ${{ secrets.CSN_DB_ID }}
           CHAMEX_DB_ID: ${{ secrets.CHAMEX_DB_ID }}
           ADUNICAMP_DB_ID: ${{ secrets.ADUNICAMP_DB_ID }}
-        run: python decrypt.py
+        run: |
+          python decrypt.py
+          python main.py
+
 
       - name: Run sync script
         run: python main.py
