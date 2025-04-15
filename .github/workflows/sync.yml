@@ -2,7 +2,7 @@ name: Sync Notion to Google Sheets
 
 on:
   schedule:
-    - cron: '0 12 * * *'  # roda todo dia às 12:00 UTC
+    - cron: "3 */3 * * *"  # gambiarra pra rodar no fuso horário de Brasília a cada 3 horas
   workflow_dispatch:
 
 jobs:
@@ -24,6 +24,10 @@ jobs:
       - name: Decrypt secrets
         env:
           ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          CSN_DB_ID: ${{ secrets.CSN_DB_ID }}
+          CHAMEX_DB_ID: ${{ secrets.CHAMEX_DB_ID }}
+          ADUNICAMP_DB_ID: ${{ secrets.ADUNICAMP_DB_ID }}
         run: python decrypt.py
 
       - name: Run sync script

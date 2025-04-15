@@ -3,10 +3,15 @@ import gspread
 from notion_client import Client
 from dotenv import load_dotenv
 from datetime import datetime
+from typing import List, Tuple
 
 load_dotenv()
-NOTION_TOKEN = os.getenv("NOTION_TOKEN")
-NOTION_DATABASE_ID = os.getenv("NOTION_DATABASE_ID")
+NOTION_TOKEN = os.environ["NOTION_TOKEN"]
+CSN_DB_ID = os.environ["NOTION_DATABASE_ID"]
+CHAMEX_DB_ID = os.environ["CHAMEX_DB_ID"]
+ADUNICAMP_DB_ID = os.environ["ADUNICAMP_DB_ID"]
+
+notion_dbs = [CSN_DB_ID, CHAMEX_DB_ID, ADUNICAMP_DB_ID]
 
 notion = Client(auth=NOTION_TOKEN)
 gc = gspread.service_account(filename="credentials.json")
@@ -22,8 +27,18 @@ STATUS_MAP = {
     "Aprovado": "Completo"
 }
 
-def fetch_tasks():
-    response = notion.databases.query(database_id=NOTION_DATABASE_ID)
+SHEETS_MAP = {
+    "CSN | Burndown Chart": CSN_DB_ID,
+    "CHAMEX | Burndown Chart": CHAMEX_DB_ID,
+    "ADunicamp | Burndown Chart": ADUNICAMP_DB_ID
+}
+
+def fetch_notion_tasks(database_id: str) -> List[Tuple[str, str, str, str]]:
+    # Query the database
+    response = notion.databases.query(database_id=database_id)
+    if not response.get("results"):
+        print(f"Nenhum resultado encontrado para o banco de dados {database_id}.")
+        return []
     tasks = []
 
     for result in response["results"]:
@@ -42,6 +57,19 @@ def get_existing_rows():
     records = sheet.get_all_values()
     return set(tuple(row) for row in records[1:])
 
+def fetch_tasks(databases_ids = List[str]):
+    for db_id in databases_ids:
+        tasks = fetch_notion_tasks(db_id)
+        if tasks:
+            return tasks
+    return []
+
+def get_sheet_name(database_id: str) -> str:
+    for sheet_name, db_id in SHEETS_MAP.items():
+        if db_id == database_id:
+            return sheet_name
+    return None
+
 def update_sheet(tasks):
     existing_rows = get_existing_rows()
 
@@ -54,11 +82,21 @@ def update_sheet(tasks):
     if new_rows:
         for row in new_rows:
             sheet.append_row(row)
-        print(f"{len(new_rows)} movimentações novas adicionadas.")
+        print(f"{len(new_rows)} movimentações novas adicionadas")
     else:
-        print("Nenhuma movimentação nova encontrada.")
+        print("Nenhuma movimentação nova encontrada")
+        
+def update_all_sheets():
+    for sheet_name, db_id in SHEETS_MAP.items():
+        tasks = fetch_notion_tasks(db_id)
+        if tasks:
+            update_sheet(tasks)
+        else:
+            print(f"Nenhuma tarefa encontrada para {sheet_name}")
 
 if __name__ == "__main__":
-    tasks = fetch_tasks()
-    update_sheet(tasks)
-    print("Burndown sincronizado com sucesso 🧨📉")
+    tasks = fetch_tasks(notion_dbs)
+    if not tasks:
+        print("Nenhuma tarefa encontrada")
+    else:
+        update_all_sheets()
