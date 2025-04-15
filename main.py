@@ -1,8 +1,6 @@
 import os
 import gspread
 from notion_client import Client
-from dotenv import load_dotenv
-from datetime import datetime
 from typing import List, Tuple
 
 NOTION_TOKEN = os.environ["NOTION_TOKEN"]
@@ -32,7 +30,6 @@ SHEETS_MAP = {
 }
 
 def fetch_notion_tasks(database_id: str) -> List[Tuple[str, str, str, str]]:
-    # Query the database
     response = notion.databases.query(database_id=database_id)
     if not response.get("results"):
         print(f"Nenhum resultado encontrado para o banco de dados {database_id}.")
@@ -49,6 +46,7 @@ def fetch_notion_tasks(database_id: str) -> List[Tuple[str, str, str, str]]:
 
         tasks.append((nome, grupo, status_principal, data_mov))
 
+    tasks = [task for task in tasks if task[3] != "Sem data"]
     return tasks
 
 def fetch_tasks(databases_ids = List[str]):
