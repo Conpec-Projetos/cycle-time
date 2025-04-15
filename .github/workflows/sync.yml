@@ -31,7 +31,3 @@ jobs:
         run: |
           python decrypt.py
           python main.py
-
-
-      - name: Run sync script
-        run: python main.py
