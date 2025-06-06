@@ -2,7 +2,7 @@ name: Sync Notion to Google Sheets
 
 on:
   schedule:
-    - cron: "3 */1 * * *"  # gambiarra pra rodar no fuso horário de Brasília a cada 1 hora
+    - cron: "0 */3 * * *"
   workflow_dispatch:
 
 jobs:
