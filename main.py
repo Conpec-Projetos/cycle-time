@@ -24,8 +24,8 @@ STATUS_MAP = {
 }
 
 SHEETS_MAP = {
-    "CSN | Burndown Chart": CSN_DB_ID,
-    "ADunicamp | Burndown Chart": ADUNICAMP_DB_ID
+    "CSN | Data": CSN_DB_ID,
+    "ADunicamp | Data": ADUNICAMP_DB_ID
 }
 
 def fetch_notion_tasks(database_id: str) -> List[Tuple[str, str, str, str]]:
