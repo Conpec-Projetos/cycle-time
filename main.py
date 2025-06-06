@@ -134,6 +134,7 @@ def calculate_global_cycle_time(sheet_names: List[str]) -> float:
 def update_cycle_time_in_okrs_sheet():
     okrs_sheet = gc.open("0. [Conpec][2025] Painel Estratégico de 2025").worksheet("Dashboard")
     cycle_time = calculate_global_cycle_time(list(SHEETS_MAP.keys()))
+    print(f"Ciclo médio de tempo: {cycle_time} dias")
     okrs_sheet.update([[cycle_time]], range_name="G21")
 
 if __name__ == "__main__":
