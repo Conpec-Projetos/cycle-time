@@ -1,4 +1,7 @@
 name: Sync Notion to Google Sheets
+permissions:
+  contents: read
+  pull-requests: write
 
 on:
   schedule:
