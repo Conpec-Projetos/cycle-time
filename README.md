@@ -24,14 +24,14 @@ A Python application that integrates with Notion databases and Google Sheets to 
 The system maps various Notion statuses to standardized workflow stages:
 
 | Notion Status | Mapped Status |
-|---------------|---------------|
-| Despriorizado | A fazer |
-| Não iniciado | A fazer |
-| Aguardando | Em progresso |
-| Em andamento | Em progresso |
-| Testando | Em progresso |
-| Finalizado | Completo |
-| Aprovado | Completo |
+| ------------- | ------------- |
+| Despriorizado | A fazer       |
+| Não iniciado | A fazer       |
+| Aguardando    | Em progresso  |
+| Em andamento  | Em progresso  |
+| Testando      | Em progresso  |
+| Finalizado    | Completo      |
+| Aprovado      | Completo      |
 
 ## Project Structure
 
@@ -78,17 +78,13 @@ The database ID in this case is `1234567890abcdef1234567890abcdef`.
 To set up the Cycle Time Tracking System, follow these steps:
 
 1. Clone this repository
-
 2. Install dependencies:
 
    ```bash
    pip install -r requirements.txt
    ```
-
 3. Set up your environment variables
-
 4. Add your `credentials.json` file to the project root directory. This file should contain your Google service account credentials in JSON format to access Google Sheets.
-
 5. Encrypt your credentials file using the provided `decrypt.py` script:
 
    ```bash
@@ -128,21 +124,6 @@ SHEETS_MAP = {
 ```
 
 The key should be the name of the sheet created by you in Google Sheets and stored in the Conpec Google Drive, and the value should be the Notion database ID for that project.
-
-### Creating New Sheets
-
-To create a new Google Sheet for a project, follow these steps:
-
-1. Create a new Google Sheet in your Google Drive.
-2. Share it with your Google service account email.
-3. Add the new sheet's ID to the `SHEETS_MAP` in `main.py`:
-
-```python
-SHEETS_MAP = {
-    "New Project Name | Data": "new_notion_database_id",
-    # ... other projects
-}
-```
 
 ## Troubleshooting
 
