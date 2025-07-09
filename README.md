@@ -2,6 +2,23 @@
 
 A Python application that integrates with Notion databases and Google Sheets to track and calculate cycle times for project management tasks. This system automatically fetches task data from Notion, processes it, and updates Google Sheets with cycle time metrics.
 
+## Project Structure
+
+```text
+cycle-time/
+├── .env                 # Where you'll store all your environment variables (not included in repo)
+├── main.py              # Main application logic
+├── requirements.txt     # Python dependencies
+└── credentials.json     # Decrypted credentials (given by the user, not included in repo)
+```
+
+## Prerequisites
+
+- Python 3.7+
+- Access to Notion API
+- Google Sheets API access
+- Google service account credentials
+
 ## Features
 
 - **Notion Integration**: Fetches task data from multiple Notion databases
@@ -33,69 +50,68 @@ The system maps various Notion statuses to standardized workflow stages:
 | Finalizado    | Completo      |
 | Aprovado      | Completo      |
 
-## Project Structure
+---
 
-```text
-cycle-time/
-├── main.py              # Main application logic
-├── decrypt.py           # Credential decryption utility
-├── requirements.txt     # Python dependencies
-├── credentials.json.enc # Encrypted Google service account credentials
-└── credentials.json     # Decrypted credentials (given by the user, not included in repo)
+## Configuration
+
+### Dependencies
+
+To Install dependencies, run:
+
+```bash
+pip install -r requirements.txt
 ```
 
-## Prerequisites
-
-- Python 3.7+
-- Access to Notion API
-- Google Sheets API access
-- Google service account credentials
-- OpenSSL (for credential decryption)
-
-## Environment Variables
+### Environment Variables
 
 Set the following environment variables:
 
 ```bash
 NOTION_TOKEN=your_notion_integration_token
-CSN_DB_ID=your_csn_notion_database_id
-ADUNICAMP_DB_ID=your_adunicamp_notion_database_id
 ENCRYPTION_KEY=your_encryption_key_for_credentials
 ```
 
-If you have more projects, you can add their Notion database IDs to the environment variables as needed. To get the ids, you have to open the projects in Notion on your browser, go to their "Backlog pages" and copy the database ID from the URL. The ID is the part after `https://www.notion.so/` and before the question mark or any other parameters.
+### Adding New Projects
 
-Here's an example of how the URL looks like:
+1. To add a new project, you have to get the Notion backlog database IDs. To get them, you have to open the projects in Notion on your browser, go to their "Backlog pages" and copy the database ID from the URL. The ID is the part after `https://www.notion.so/` and before the question mark or any other parameters.
 
-```bash
-https://www.notion.so/1234567890abcdef1234567890abcdef?v=0987654321zyxwvutsrqponmlkj
-```
-
-The database ID in this case is `1234567890abcdef1234567890abcdef`.
-
-## Installation and Setup
-
-To set up the Cycle Time Tracking System, follow these steps:
-
-1. Clone this repository
-2. Install dependencies:
+   Here's an example of how the URL looks like, where the database ID in this case is `1234567890abcdef1234567890abcdef`:
 
    ```bash
-   pip install -r requirements.txt
+   https://www.notion.so/1234567890abcdef1234567890abcdef?v=0987654321zyxwvutsrqponmlkj
    ```
-3. Set up your environment variables
-4. Add your `credentials.json` file to the project root directory. This file should contain your Google service account credentials in JSON format to access Google Sheets.
-5. Encrypt your credentials file using the provided `decrypt.py` script:
+
+   Finally, after having all the desired IDs, go to the environment variables file and add them as follows:
 
    ```bash
-   python decrypt.py
+   YOUR_PROJECT_DB_ID=your_project_notion_database_id
+   YOUR_PROJECT_2_DB_ID=your_project_2_notion_database_id
    ```
+2. Then, update the `SHEETS_MAP` dictionary in `main.py`. The key should be the name of the sheet created by you in Google Sheets and stored in the Conpec Google Drive, and the value should be the Notion database ID for that project.
 
-   This will create an encrypted version of your credentials file named `credentials.json.enc`. Make sure to keep your original `credentials.json` file secure and not included in the repository.
+   ```python
+   SHEETS_MAP = {
+      "Your Project Name | Data": YOUR_PROJECT_DB_ID,
+      # ... other projects
+   }
+   ```
+3. Afterwards update the `github/workflows/sync.yml` file by adding the name of the environment variable you set:
+
+   ```yaml
+   - name: Decrypt and run
+     env:
+       ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+       NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+       YOUR_PROJECT_DB_ID: ${{ secrets.YOUR_PROJECT_DB_ID }}
+       YOUR_PROJECT_2_DB_ID: ${{ secrets.YOUR_PROJECT_2_DB_ID }}
+   ```
+4. And last but not least, add all these environment variables in the GitHub "Secrets and Variables" section of this project.
+
+### Credentials
+
+Add your `credentials.json` file to the project root directory. This file should contain your Google service account credentials in JSON format to access Google Sheets.
 
 ## Usage
-
-### Basic Usage
 
 Run the main script to update all sheets and calculate cycle times:
 
@@ -103,34 +119,11 @@ Run the main script to update all sheets and calculate cycle times:
 python main.py
 ```
 
-This will:
-
-1. Fetch latest data from all configured Notion databases
-2. Update corresponding Google Sheets with new task movements
-3. Calculate cycle times for all projects
-4. Update the PE dashboard with global metrics
-
-## Configuration
-
-### Adding New Projects
-
-To add a new project, update the `SHEETS_MAP` dictionary in `main.py`:
-
-```python
-SHEETS_MAP = {
-    "Your Project Name | Data": "your_notion_database_id",
-    # ... other projects
-}
-```
-
-The key should be the name of the sheet created by you in Google Sheets and stored in the Conpec Google Drive, and the value should be the Notion database ID for that project.
-
 ## Troubleshooting
 
 - Ensure all environment variables are set correctly
-- Verify that your Notion integration has access to the required databases
+- Verify that your Notion integration has access to the required databases (Connections option from the 3 dots in the header)
 - Check that your Google service account has access to the target spreadsheets
-- Make sure OpenSSL is available in your system PATH for credential decryption
 
 ## License
 
