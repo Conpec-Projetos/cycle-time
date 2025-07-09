@@ -9,6 +9,7 @@ import pandas as pd
 NOTION_TOKEN = os.environ["NOTION_TOKEN"]
 CSN_DB_ID = os.environ["CSN_DB_ID"]
 ADUNICAMP_DB_ID = os.environ["ADUNICAMP_DB_ID"]
+MEU_APE_DB_ID = os.environ["MEU_APE_DB_ID"]
 
 notion = Client(auth=NOTION_TOKEN)
 gc = gspread.service_account(filename="credentials.json")
@@ -25,7 +26,8 @@ STATUS_MAP = {
 
 SHEETS_MAP = {
     "CSN | Data": CSN_DB_ID,
-    "ADunicamp | Data": ADUNICAMP_DB_ID
+    "ADunicamp | Data": ADUNICAMP_DB_ID,
+    "Meu Apê | Data": MEU_APE_DB_ID,
 }
 
 def fetch_notion_tasks(database_id: str) -> List[Tuple[str, str, str, str]]:
