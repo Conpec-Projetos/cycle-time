@@ -88,6 +88,7 @@ ENCRYPTION_KEY=your_encryption_key_for_credentials
    YOUR_PROJECT_2_DB_ID=your_project_2_notion_database_id
    ```
 2. Then, update the `SHEETS_MAP` dictionary in `main.py`. The key should be the name of the sheet created by you in Google Sheets and stored in the Conpec Google Drive, and the value should be the Notion database ID for that project.
+   ***Remember to share the Google Sheets with the service account email from your `credentials.json` file.***
 
    ```python
    SHEETS_MAP = {
