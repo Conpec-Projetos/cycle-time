@@ -50,16 +50,9 @@ def fetch_notion_tasks(database_id: str) -> List[Tuple[str, str, str, str]]:
     tasks = [task for task in tasks if task[3] != "Sem data"]
     return tasks
 
-def fetch_tasks(databases_ids = List[str]):
-    for db_id in databases_ids:
-        tasks = fetch_notion_tasks(db_id)
-        if tasks:
-            return tasks
-    return []
-
 def get_existing_rows(sheet) -> List[Tuple[str, str, str, str]]:
     records = sheet.get_all_values()
-    return set(tuple(row) for row in records[1:])
+    return set(tuple(row) for row in records[0:])
 
 def update_sheet(tasks, sheet_name: str):
     sheet = gc.open(sheet_name).sheet1
@@ -99,6 +92,9 @@ def calculate_cycle_times(sheet_name: str) -> pd.DataFrame:
 
     started = grouped['Data Movimentação'].min().unstack()
 
+    if started.get('Em progresso') is None or started.get('Completo') is None:
+        print(f"Planilha '{sheet_name}' não contém items 'Em progresso' ou 'Completo'.")
+        return pd.DataFrame(columns=['Tarefa', 'Cycle Time (dias)'])
     started['Cycle Time (dias)'] = (
         started.get('Completo') - started.get('Em progresso')
     ).dt.days
