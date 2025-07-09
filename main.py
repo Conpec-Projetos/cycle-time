@@ -3,16 +3,19 @@ import gspread
 from notion_client import Client
 from typing import List, Tuple
 import pandas as pd
+import json
 # from dotenv import load_dotenv
 # load_dotenv()
 
 NOTION_TOKEN = os.environ["NOTION_TOKEN"]
+CREDENTIALS_JSON = os.environ["CREDENTIALS_JSON"]
 CSN_DB_ID = os.environ["CSN_DB_ID"]
 ADUNICAMP_DB_ID = os.environ["ADUNICAMP_DB_ID"]
 MEU_APE_DB_ID = os.environ["MEU_APE_DB_ID"]
 
 notion = Client(auth=NOTION_TOKEN)
-gc = gspread.service_account(filename="credentials.json")
+credentials_dict = json.loads(CREDENTIALS_JSON)
+gc = gspread.service_account_from_dict(credentials_dict)
 
 STATUS_MAP = {
     "Despriorizado": "A fazer",

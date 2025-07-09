@@ -24,10 +24,10 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Decrypt and run
+      - name: Run
         env:
-          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          CREDENTIALS_JSON: ${{ secrets.CREDENTIALS_JSON }}
           CSN_DB_ID: ${{ secrets.CSN_DB_ID }}
           ADUNICAMP_DB_ID: ${{ secrets.ADUNICAMP_DB_ID }}
           MEU_APE_DB_ID: ${{ secrets.MEU_APE_DB_ID }}
