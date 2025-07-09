@@ -8,8 +8,7 @@ A Python application that integrates with Notion databases and Google Sheets to 
 cycle-time/
 ├── .env                 # Where you'll store all your environment variables (not included in repo)
 ├── main.py              # Main application logic
-├── requirements.txt     # Python dependencies
-└── credentials.json     # Decrypted credentials (given by the user, not included in repo)
+└── requirements.txt     # Python dependencies
 ```
 
 ## Prerequisites
@@ -17,7 +16,7 @@ cycle-time/
 - Python 3.7+
 - Access to Notion API
 - Google Sheets API access
-- Google service account credentials
+- Google service account credentials (This file should contain your Google service account credentials in JSON format to access Google Sheets.)
 
 ## Features
 
@@ -69,6 +68,7 @@ Set the following environment variables:
 ```bash
 NOTION_TOKEN=your_notion_integration_token
 ENCRYPTION_KEY=your_encryption_key_for_credentials
+CREDENTIALS_JSON=your_credentials_json_content_in_one_line
 ```
 
 ### Adding New Projects
@@ -107,10 +107,6 @@ ENCRYPTION_KEY=your_encryption_key_for_credentials
        YOUR_PROJECT_2_DB_ID: ${{ secrets.YOUR_PROJECT_2_DB_ID }}
    ```
 4. And last but not least, add all these environment variables in the GitHub "Secrets and Variables" section of this project.
-
-### Credentials
-
-Add your `credentials.json` file to the project root directory. This file should contain your Google service account credentials in JSON format to access Google Sheets.
 
 ## Usage
 
