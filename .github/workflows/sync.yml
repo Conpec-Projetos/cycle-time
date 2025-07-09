@@ -32,5 +32,4 @@ jobs:
           ADUNICAMP_DB_ID: ${{ secrets.ADUNICAMP_DB_ID }}
           MEU_APE_DB_ID: ${{ secrets.MEU_APE_DB_ID }}
         run: |
-          python decrypt.py
           python main.py
