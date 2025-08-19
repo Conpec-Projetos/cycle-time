@@ -76,7 +76,7 @@ def update_sheet(tasks, sheet_name: str):
             sheet.append_row(row)
         print(f"{len(new_rows)} movimentações novas adicionadas")
     else:
-        print("Nenhuma movimentação nova encontrada")
+        print(f"Nenhuma movimentação nova encontrada em {sheet_name[0:-6]}")
         
 def update_all_sheets():
     for sheet_name, db_id in SHEETS_MAP.items():
