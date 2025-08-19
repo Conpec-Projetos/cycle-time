@@ -32,5 +32,6 @@ jobs:
           ADUNICAMP_DB_ID: ${{ secrets.ADUNICAMP_DB_ID }}
           MEU_APE_DB_ID: ${{ secrets.MEU_APE_DB_ID }}
           SOCIAL_MENTES_DB_ID: ${{ secrets.SOCIAL_MENTES_DB_ID }}
+          CHAMEX_DB_ID: ${{ secrets.CHAMEX_DB_ID }}
         run: |
           python main.py

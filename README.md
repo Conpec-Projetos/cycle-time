@@ -73,7 +73,7 @@ CREDENTIALS_JSON=your_credentials_json_content_in_one_line
 
 ### Adding New Projects
 
-1. To add a new project, you have to get the Notion backlog database IDs. To get them, you have to open the projects in Notion on your browser, go to their "Backlog pages" and copy the database ID from the URL. The ID is the part after `https://www.notion.so/` and before the question mark or any other parameters.
+1. To add a new project, you have to get the Notion backlog database IDs. To get them, you have to open the projects in Notion on your browser, go to their "Backlog" page and copy the database ID from the URL. The ID is the part after `https://www.notion.so/` and before the question mark or any other parameters.
 
    Here's an example of how the URL looks like, where the database ID in this case is `1234567890abcdef1234567890abcdef`:
 

@@ -13,6 +13,7 @@ CSN_DB_ID = os.environ["CSN_DB_ID"]
 ADUNICAMP_DB_ID = os.environ["ADUNICAMP_DB_ID"]
 MEU_APE_DB_ID = os.environ["MEU_APE_DB_ID"]
 SOCIAL_MENTES_DB_ID = os.environ["SOCIAL_MENTES_DB_ID"]
+CHAMEX_DB_ID = os.environ["CHAMEX_DB_ID"]
 
 notion = Client(auth=NOTION_TOKEN)
 credentials_dict = json.loads(CREDENTIALS_JSON)
@@ -32,7 +33,8 @@ SHEETS_MAP = {
     "CSN | Data": CSN_DB_ID,
     "ADunicamp | Data": ADUNICAMP_DB_ID,
     "Meu Apê | Data": MEU_APE_DB_ID,
-    "Social Mentes | Data": SOCIAL_MENTES_DB_ID
+    "Social Mentes | Data": SOCIAL_MENTES_DB_ID,
+    "Chamex | Data": CHAMEX_DB_ID
 }
 
 def fetch_notion_tasks(database_id: str) -> List[Tuple[str, str, str, str]]:
