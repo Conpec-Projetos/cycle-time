@@ -48,7 +48,7 @@ def fetch_notion_tasks(database_id: str) -> List[Tuple[str, str, str, str]]:
         props = result["properties"]
 
         nome = props["Story"]["title"][0]["plain_text"] if props["Story"]["title"] else "Sem nome"
-        grupo = props["Estado"]["status"]["name"] if props["Estado"]["status"] else "Sem status"
+        grupo = props["Estado"]["status"]["name"] if (props["Estado"]["status"] or props["Status"]['status']) else "Sem status"
         status_principal = STATUS_MAP.get(grupo, "Outro")
         data_mov = props["DateChange"]["date"]["start"] if props.get("DateChange") and props["DateChange"].get("date") else "Sem data"
 
